@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FiHome, FiFileText, FiUsers, FiLogOut, FiMenu, FiX, FiSettings } from 'react-icons/fi';
+import { FiHome, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { isAuthenticated, logout, getCurrentUser } from '../../api/services/auth';
 import Cookies from 'js-cookie';
 
@@ -86,8 +86,6 @@ const MainLayout = ({ children }) => {
   const navigation = [
     { name: 'User Dashboard', href: '/dashboard', icon: FiHome },
     { name: 'Admin Dashboard', href: '/admin', icon: FiSettings },
-    { name: 'Exams', href: '/admin/exams', icon: FiFileText },
-    { name: 'Candidates', href: '/admin/candidates', icon: FiUsers },
   ];
   
   return (
@@ -117,7 +115,7 @@ const MainLayout = ({ children }) => {
                 <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                   <div className="flex-shrink-0 flex items-center px-4">
                     <Link href="/dashboard" className="text-xl font-bold text-primary-600 hover:text-primary-700">
-                      Exam System
+                      App Boilerplate
                     </Link>
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
@@ -173,7 +171,7 @@ const MainLayout = ({ children }) => {
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
               <Link href="/dashboard" className="text-xl font-bold text-primary-600 hover:text-primary-700">
-                Exam System
+                App Boilerplate
               </Link>
             </div>
             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
@@ -209,34 +207,20 @@ const MainLayout = ({ children }) => {
             </nav>
           </div>
           <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-            <div className="flex-shrink-0 w-full group block">
-              <div className="flex items-center">
-                <div>
-                  <div className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-primary-100 text-primary-700">
-                    {user?.username?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                    {user?.username || 'User'}
-                  </p>
-                  <button
-                    onClick={handleLogout}
-                    className="text-xs font-medium text-gray-500 group-hover:text-gray-700 flex items-center"
-                  >
-                    <FiLogOut className="mr-1 h-4 w-4" />
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={handleLogout}
+              className="group flex items-center px-2 py-2 text-sm font-medium w-full text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+            >
+              <FiLogOut className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+              Logout
+            </button>
           </div>
         </div>
       </div>
       
       {/* Main content */}
       <div className="lg:pl-64 flex flex-col flex-1">
-        <main className="flex-1 pb-8">
+        <main className="flex-1 pb-10">
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               {children}

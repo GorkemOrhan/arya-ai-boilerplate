@@ -5,10 +5,6 @@ import flask
 import sqlalchemy
 from .. import db
 from ..models.user import User
-from ..models.exam import Exam
-from ..models.candidate import Candidate
-from ..models.question import Question
-from ..models.result import Result
 
 # Create test blueprint
 test_bp = Blueprint('test', __name__)
@@ -61,11 +57,7 @@ def system_info():
     
     # Get application stats
     stats = {
-        'users': User.query.count(),
-        'exams': Exam.query.count(),
-        'candidates': Candidate.query.count(),
-        'questions': Question.query.count(),
-        'results': Result.query.count()
+        'users': User.query.count()
     }
     
     # System information

@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 
 class User(db.Model):
-    """User model for administrators who can create and manage exams."""
+    """User model for administrators."""
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -13,9 +13,6 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    # Relationships
-    exams = db.relationship('Exam', backref='creator', lazy=True)
 
     def __init__(self, email, username, password, is_admin=False):
         self.email = email
