@@ -8,8 +8,9 @@ import Button from '../../../components/ui/Button';
 import { getSystemSettings, updateSystemSettings } from '../../../api/services/admin';
 import { getCurrentUser } from '../../../api/services/auth';
 
-const SettingsPage = () => {
+const SystemSettings = () => {
   const router = useRouter();
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [settings, setSettings] = useState({
@@ -30,7 +31,7 @@ const SettingsPage = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   
   useEffect(() => {
-    const fetchSettings = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       
       try {
@@ -43,6 +44,8 @@ const SettingsPage = () => {
           return;
         }
         
+        setUser(currentUser);
+        
         // Get settings
         const result = await getSystemSettings();
         if (result.success) {
@@ -52,7 +55,7 @@ const SettingsPage = () => {
           });
         }
       } catch (error) {
-        console.error('Error fetching settings:', error);
+        console.error('Error fetching user data:', error);
         setMessage({
           type: 'error',
           text: 'Failed to load settings. Please try again.',
@@ -62,7 +65,7 @@ const SettingsPage = () => {
       }
     };
     
-    fetchSettings();
+    fetchData();
   }, [router]);
   
   const handleChange = (e) => {
@@ -108,12 +111,26 @@ const SettingsPage = () => {
   
   return (
     <div>
-      <div className="flex items-center mb-6">
-        <Link href="/admin" className="mr-4">
-          <FiArrowLeft className="h-5 w-5 text-gray-500 hover:text-gray-700" />
-        </Link>
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900">System Settings</h1>
       </div>
+      
+      <Card className="p-6 mb-8">
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Application Settings</h2>
+        <p className="text-gray-600 mb-4">
+          This is a placeholder for the system settings interface. In a real application, you would be able to configure:
+        </p>
+        <ul className="list-disc pl-5 mb-4 text-gray-600 space-y-1">
+          <li>General application settings</li>
+          <li>Email notification preferences</li>
+          <li>Security settings</li>
+          <li>API integrations</li>
+          <li>Theme and appearance</li>
+        </ul>
+        <p className="text-gray-600">
+          Extend this page by implementing the settings functionality according to your application's requirements.
+        </p>
+      </Card>
       
       {message.text && (
         <div className={`mb-6 p-4 rounded-md ${
@@ -370,6 +387,6 @@ const SettingsPage = () => {
   );
 };
 
-SettingsPage.getLayout = (page) => <MainLayout>{page}</MainLayout>;
+SystemSettings.getLayout = (page) => <MainLayout>{page}</MainLayout>;
 
-export default SettingsPage; 
+export default SystemSettings; 

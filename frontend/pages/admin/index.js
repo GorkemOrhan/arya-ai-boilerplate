@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FiUsers, FiFileText, FiCheckCircle, FiSettings, FiList } from 'react-icons/fi';
+import { FiUsers, FiSettings } from 'react-icons/fi';
 import MainLayout from '../../components/layout/MainLayout';
 import Card from '../../components/ui/Card';
-import Button from '../../components/ui/Button';
-import { getExams } from '../../api/services/exams';
 import { getCurrentUser } from '../../api/services/auth';
 
 const AdminDashboard = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [exams, setExams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
@@ -24,17 +21,11 @@ const AdminDashboard = () => {
         
         // Check if user is admin
         if (!currentUser || !currentUser.is_admin) {
-          router.push('/admin');
+          router.push('/dashboard');
           return;
         }
         
         setUser(currentUser);
-        
-        // Get exams
-        const result = await getExams();
-        if (result.success) {
-          setExams(result.exams);
-        }
       } catch (error) {
         console.error('Error fetching admin dashboard data:', error);
       } finally {
@@ -47,32 +38,11 @@ const AdminDashboard = () => {
   
   const adminModules = [
     { 
-      name: 'Exam Management', 
-      description: 'Create, edit, and manage exams',
-      icon: FiFileText, 
-      color: 'bg-blue-500',
-      link: '/admin/exams'
-    },
-    { 
-      name: 'Question Bank', 
-      description: 'Manage questions and create question pools',
-      icon: FiList, 
-      color: 'bg-green-500',
-      link: '/admin/questions'
-    },
-    { 
-      name: 'Candidate Management', 
-      description: 'Add, edit, and manage candidates',
+      name: 'User Management', 
+      description: 'Manage users and permissions',
       icon: FiUsers, 
-      color: 'bg-purple-500',
-      link: '/admin/candidates'
-    },
-    { 
-      name: 'Results & Reports', 
-      description: 'View and export exam results',
-      icon: FiCheckCircle, 
-      color: 'bg-yellow-500',
-      link: '/admin/results'
+      color: 'bg-blue-500',
+      link: '/admin/users'
     },
     { 
       name: 'System Settings', 
@@ -90,10 +60,10 @@ const AdminDashboard = () => {
       </div>
       
       {/* Admin Modules */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {adminModules.map((module) => (
           <Card key={module.name} className="hover:shadow-lg transition-shadow duration-200">
-            <Link href={module.link} className="block">
+            <Link href={module.link} className="block p-6">
               <div className="flex items-center mb-4">
                 <div className={`${module.color} p-3 rounded-full mr-4`}>
                   <module.icon className="h-6 w-6 text-white" />
@@ -106,19 +76,19 @@ const AdminDashboard = () => {
         ))}
       </div>
       
-      {/* Recent Activity */}
+      {/* Admin Information */}
       <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Recent Activity</h2>
-        </div>
-        
-        {isLoading ? (
-          <p>Loading activity...</p>
-        ) : (
-          <Card>
-            <p className="text-gray-500">No recent activity to display.</p>
-          </Card>
-        )}
+        <Card className="p-6">
+          <h2 className="text-lg font-medium text-gray-900 mb-4">Admin Information</h2>
+          <p className="text-gray-600 mb-4">
+            As an administrator, you have access to special features and capabilities to manage the application.
+            Use the modules above to navigate to different administrative functions.
+          </p>
+          <p className="text-gray-600">
+            This boilerplate provides a foundation for building administrative interfaces.
+            You can extend this dashboard with your own custom admin modules and functionality.
+          </p>
+        </Card>
       </div>
     </div>
   );

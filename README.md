@@ -1,30 +1,29 @@
-# Automated Online Exam System
+# Application Boilerplate
 
-A web-based platform for conducting online exams with automatic scoring and reporting.
+A fully functional web application boilerplate with user authentication and account management features.
 
 ## Features
 
-- Personalized test links for candidates
-- Multiple-choice and open-ended question support
-- Timed exam environment
-- Automatic scoring and result compilation
-- Email notifications for candidates and HR team
-- Admin interface for test management
+- User authentication (login/register)
+- JWT token-based sessions
+- User roles (admin/regular)
+- Responsive layout with mobile support
+- Admin dashboard
+- Ready to extend with your custom features
 
 ## Tech Stack
 
 - **Frontend**: Next.js (React)
 - **Backend**: Flask (Python)
 - **Database**: PostgreSQL
-- **Email**: SMTP
+- **Authentication**: JWT
 
 ## Project Structure
 
 ```
-automated-online-exam-system/
+application-boilerplate/
 ├── frontend/               # Next.js frontend application
 ├── backend/                # Flask backend application
-├── database/               # Database scripts and migrations
 └── docs/                   # Documentation
 ```
 
@@ -54,7 +53,8 @@ flask run
 
 ### Database Setup
 ```bash
-# Instructions for setting up PostgreSQL database
+# In the backend directory with venv activated
+python init_db.py
 ```
 
 ## Deployment
@@ -67,10 +67,6 @@ For a full-stack application to work properly, you need to deploy both the front
 2. **Backend**: Deploy to a platform that supports Python/Flask (Render, Railway, Heroku, etc.)
 3. **Connect**: Configure the frontend to communicate with your deployed backend
 
-For detailed instructions, see:
-- [GitHub Pages Deployment Guide](docs/github-pages-deployment.md) (Frontend)
-- [Backend Deployment Guide](docs/backend-deployment.md) (Backend)
-
 ### GitHub Pages Deployment (Frontend Only)
 
 This project is configured to deploy the frontend to GitHub Pages using GitHub Actions:
@@ -81,16 +77,6 @@ This project is configured to deploy the frontend to GitHub Pages using GitHub A
    - Under "Build and deployment", select "GitHub Actions" as the source
 3. The frontend will be automatically deployed when you push to the main branch
 4. Your site will be available at `https://[username].github.io/[repository-name]`
-
-#### Workflow Options
-
-We've provided three GitHub Actions workflow files for deployment:
-
-1. **Standard Workflow** (`.github/workflows/frontend-deploy.yml`): A basic workflow for deploying Next.js to GitHub Pages
-2. **Official Next.js Workflow** (`.github/workflows/nextjs.yml`): Based on GitHub's official Next.js deployment template
-3. **Simplified Workflow** (`.github/workflows/simple-nextjs.yml`): A streamlined workflow without complex caching (recommended for most users)
-
-If you encounter issues with one workflow, try using another by manually triggering it from the Actions tab. The simplified workflow is recommended for most users as it avoids cache-related errors.
 
 ### Backend Deployment
 
@@ -120,17 +106,15 @@ The default admin credentials (set in `init_db.py`) are:
 
 Make sure your backend is properly deployed and the database is initialized before attempting to log in.
 
-## Development Roadmap
+## Extending the Boilerplate
 
-1. Project setup and repository structure
-2. Database schema design
-3. Backend API development
-4. Frontend user interface development
-5. Authentication and authorization
-6. Exam creation and management
-7. Exam taking functionality
-8. Automatic scoring and reporting
-9. Email notifications
-10. Admin dashboard
-11. Testing and bug fixes
-12. Deployment 
+This boilerplate provides a solid foundation for building web applications. To extend it:
+
+1. Add new models to `backend/app/models/`
+2. Create new API endpoints in `backend/app/api/`
+3. Add new pages to `frontend/pages/`
+4. Extend the UI components in `frontend/components/`
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 

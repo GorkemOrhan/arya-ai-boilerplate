@@ -28,7 +28,7 @@ def create_app(config_class=Config):
         # Load the instance config, if it exists, when not testing
         app.config.from_mapping(
             SECRET_KEY=os.environ.get('SECRET_KEY', 'dev'),
-            SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL', 'sqlite:///exam_system.db'),
+            SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL', 'sqlite:///app.db'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             JWT_SECRET_KEY=os.environ.get('JWT_SECRET_KEY', 'jwt-secret-key'),
             MAIL_SERVER=os.environ.get('MAIL_SERVER'),
@@ -54,7 +54,7 @@ def create_app(config_class=Config):
     
     # Configure CORS to allow requests from GitHub Pages and localhost
     CORS(app, resources={r"/api/*": {"origins": [
-        "https://GorkemOrhan.github.io",  # Replace with your GitHub Pages domain
+        "https://your-github-username.github.io",  # Replace with your GitHub Pages domain
         "http://localhost:3000",  # For local frontend development
         "http://127.0.0.1:3000"   # Alternative localhost address
     ]}})
@@ -67,17 +67,9 @@ def create_app(config_class=Config):
     
     # Register blueprints
     from .api.auth import auth_bp
-    from .api.exams import exams_bp
-    from .api.questions import questions_bp
-    from .api.candidates import candidates_bp
-    from .api.results import results_bp
     from .api.test import test_bp
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(exams_bp, url_prefix='/api/exams')
-    app.register_blueprint(questions_bp, url_prefix='/api/questions')
-    app.register_blueprint(candidates_bp, url_prefix='/api/candidates')
-    app.register_blueprint(results_bp, url_prefix='/api/results')
     app.register_blueprint(test_bp, url_prefix='/api/test')
 
     # Setup error handlers
