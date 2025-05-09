@@ -24,6 +24,8 @@ export const login = async (email, password) => {
     const { access_token, user } = response.data;
     
     console.log('Login successful, token received:', access_token ? 'Yes (length: ' + access_token.length + ')' : 'No');
+    console.log('User data received:', user);
+    console.log('Is admin:', user?.is_admin);
     
     if (!access_token) {
       console.error('No access token received from server');
@@ -58,7 +60,8 @@ export const login = async (email, password) => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('user'); // Clear existing user data
       localStorage.setItem('user', JSON.stringify(user));
-      console.log('User info stored in localStorage');
+      console.log('User info stored in localStorage:', user);
+      console.log('Admin status stored:', user.is_admin);
     }
     
     // Try to validate the token, but don't fail the login if it doesn't work
@@ -70,6 +73,17 @@ export const login = async (email, password) => {
       if (!validationResult.success || !validationResult.valid) {
         console.warn('Token validation failed, but continuing with login.');
         // We'll continue with login anyway, as this might be a temporary backend issue
+      } else {
+        console.log('Token validated. User data from validation:', validationResult.user);
+        console.log('Admin status from validation:', validationResult.user?.is_admin);
+        
+        // Update user data with the validated data if available
+        if (validationResult.user) {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('user', JSON.stringify(validationResult.user));
+            console.log('Updated user info in localStorage with validated data');
+          }
+        }
       }
     } catch (validationError) {
       console.error('Error validating token:', validationError);
@@ -142,6 +156,16 @@ export const validateToken = async () => {
       console.log('Validating token...');
       const response = await api.get('/auth/validate-token');
       console.log('Token validation response:', response.status);
+      console.log('Token validation data:', response.data);
+      
+      if (response.data.valid && response.data.user) {
+        // Update user data in localStorage to ensure admin status is up to date
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          console.log('Updated user data in localStorage from token validation');
+          console.log('Admin status from validation:', response.data.user.is_admin);
+        }
+      }
       
       return { 
         success: true, 

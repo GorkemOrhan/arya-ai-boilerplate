@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { login, isAuthenticated } from '../api/services/auth';
+import { login, isAuthenticated, getCurrentUser } from '../api/services/auth';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 
@@ -15,7 +15,17 @@ const Login = () => {
   useEffect(() => {
     // Redirect if already authenticated
     if (isAuthenticated()) {
-      router.push('/dashboard');
+      const user = getCurrentUser();
+      console.log('Login page: Already authenticated, user:', user);
+      
+      // If user is admin, redirect to admin dashboard
+      if (user && user.is_admin) {
+        console.log('Login page: Redirecting admin to admin dashboard');
+        router.push('/admin');
+      } else {
+        console.log('Login page: Redirecting user to dashboard');
+        router.push('/dashboard');
+      }
     }
   }, [router]);
   
@@ -27,7 +37,19 @@ const Login = () => {
       
       if (result.success) {
         toast.success('Login successful!');
-        router.push('/dashboard');
+        
+        // Get user data from result
+        const { user } = result;
+        console.log('Login successful, user:', user);
+        
+        // Check if user is admin and redirect accordingly
+        if (user && user.is_admin) {
+          console.log('Redirecting admin to admin dashboard');
+          router.push('/admin');
+        } else {
+          console.log('Redirecting user to dashboard');
+          router.push('/dashboard');
+        }
       } else {
         toast.error(result.message);
       }

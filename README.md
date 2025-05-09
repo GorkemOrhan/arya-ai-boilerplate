@@ -48,14 +48,39 @@ cd backend
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-flask run
 ```
 
-### Database Setup
-```bash
-# In the backend directory with venv activated
-python init_db.py
-```
+### PostgreSQL Database Setup
+
+1. Install PostgreSQL if you haven't already:
+   - Windows: Download and install from [PostgreSQL official website](https://www.postgresql.org/download/windows/)
+   - macOS: `brew install postgresql`
+   - Linux: `sudo apt install postgresql postgresql-contrib`
+
+2. Create a `.env` file in the backend directory (copy from `.env.example`) and configure your database:
+   ```
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app_boilerplate
+   ```
+   Replace username, password, and database name as needed.
+
+3. Setup the database using the provided script:
+   
+   **Windows (PowerShell):**
+   ```powershell
+   cd backend
+   .\setup_postgres.ps1
+   ```
+   
+   **macOS/Linux:**
+   ```bash
+   cd backend
+   python setup_postgres.py
+   ```
+
+4. Start the Flask application:
+   ```bash
+   flask run
+   ```
 
 ## Deployment
 
